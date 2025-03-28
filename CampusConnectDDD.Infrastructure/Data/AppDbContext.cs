@@ -16,4 +16,6 @@ public class AppDbContext : DbContext
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Postagem> Postagens { get; set; }
     public DbSet<Evento> Eventos { get; set; }
+    
+    public DbSet<Comentario> Comentarios { get; set; }
 }

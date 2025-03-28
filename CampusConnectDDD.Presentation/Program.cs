@@ -15,6 +15,7 @@ public class Program
         builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         builder.Services.AddScoped<IPostagemRepository, PostagemRepository>();
         builder.Services.AddScoped<IEventoRepository, EventoRepository>();
+        builder.Services.AddScoped<IComentarioRepository, ComentarioRepository>();
         
         // Add services to the container.
         builder.Services.AddControllers();

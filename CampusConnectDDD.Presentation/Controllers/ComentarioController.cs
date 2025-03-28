@@ -64,7 +64,6 @@ public class ComentarioController : ControllerBase
         comentario.Texto = comentarioAtualizado.Texto;
         comentario.DataCriacao = comentarioAtualizado.DataCriacao;
         comentario.UsuarioId = comentarioAtualizado.UsuarioId;
-        comentario.PostagemId = comentarioAtualizado.PostagemId;
         
         _comentarioRepository.Atualizar(id, comentario);
         return NoContent();

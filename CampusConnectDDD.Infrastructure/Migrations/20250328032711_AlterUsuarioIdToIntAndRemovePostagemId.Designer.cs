@@ -4,6 +4,7 @@ using CampusConnectDDD.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampusConnectDDD.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250328032711_AlterUsuarioIdToIntAndRemovePostagemId")]
+    partial class AlterUsuarioIdToIntAndRemovePostagemId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +36,9 @@ namespace CampusConnectDDD.Infrastructure.Migrations
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("PostagemId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Texto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -41,6 +47,8 @@ namespace CampusConnectDDD.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PostagemId");
 
                     b.ToTable("Comentarios");
                 });
@@ -87,10 +95,6 @@ namespace CampusConnectDDD.Infrastructure.Migrations
                     b.Property<int>("AutorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Comentarios")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Conteudo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -126,11 +130,9 @@ namespace CampusConnectDDD.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Seguidores")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Seguindo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Senha")
@@ -140,6 +142,18 @@ namespace CampusConnectDDD.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("CampusConnectDDD.Domain.Entities.Comentario", b =>
+                {
+                    b.HasOne("CampusConnectDDD.Domain.Entities.Postagem", null)
+                        .WithMany("Comentarios")
+                        .HasForeignKey("PostagemId");
+                });
+
+            modelBuilder.Entity("CampusConnectDDD.Domain.Entities.Postagem", b =>
+                {
+                    b.Navigation("Comentarios");
                 });
 #pragma warning restore 612, 618
         }

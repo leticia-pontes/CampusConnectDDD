@@ -2,6 +2,7 @@ using CampusConnectDDD.Domain.Entities;
 using CampusConnectDDD.Infrastructure.Data;
 using CampusConnectDDD.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace CampusConnectDDD.Infrastructure.Repositories;
 

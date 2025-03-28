@@ -65,9 +65,7 @@ public class UsuarioController : ControllerBase
     public IActionResult Follow(int id, int idSeguindo)
     {
         var usuario = _usuarioRepository.ObterUsuarioPorId(id);
-        Console.WriteLine($"ID: {usuario.Id}, Seguindo: {usuario.Seguindo?.Count}");
         var seguindo = _usuarioRepository.ObterUsuarioPorId(idSeguindo);
-        Console.WriteLine($"ID: {seguindo.Id}, Seguindo: {seguindo.Seguindo?.Count}");
         
         if (usuario == null || seguindo == null) return NotFound("Usuário não encontrado.");
         if (usuario.Seguindo.Contains(idSeguindo)) return BadRequest("Você já segue este usuário.");

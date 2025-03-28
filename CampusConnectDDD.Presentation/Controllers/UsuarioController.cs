@@ -16,6 +16,11 @@ public class UsuarioController : ControllerBase
         _usuarioRepository = usuarioRepository;
     }
 
+    /// <summary>
+    /// Cria um usuário.
+    /// </summary>
+    /// <param name="usuario">Objeto do tipo 'Usuario' a ser inserido no banco</param>
+    /// <returns>Retorna um status de sucesso ou uma exceção de erro.</returns>
     [HttpPost]
     public IActionResult Post(Usuario usuario)
     {

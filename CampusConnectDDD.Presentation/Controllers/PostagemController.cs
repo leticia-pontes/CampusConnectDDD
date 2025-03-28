@@ -20,16 +20,6 @@ public class PostagemController : ControllerBase
     {
         try
         {
-            if (postagem.Autor != null)
-            {
-                // Adicionando valores padrão para os campos obrigatórios do Autor
-                if (postagem.Autor.Curso == null) postagem.Autor.Curso = "";
-                if (postagem.Autor.Email == null) postagem.Autor.Email = "";
-                if (postagem.Autor.Senha == null) postagem.Autor.Senha = "";
-                if (postagem.Autor.Seguindo == null) postagem.Autor.Seguindo = new List<int>();
-                if (postagem.Autor.Seguidores == null) postagem.Autor.Seguidores = new List<int>();
-            }
-
             var postagemCriada = _postagemRepository.Adicionar(postagem);
             return CreatedAtAction(nameof(GetById), new { id = postagemCriada.Id },
                 postagemCriada);
@@ -46,21 +36,7 @@ public class PostagemController : ControllerBase
         var postagem = _postagemRepository.ObterPostagemPorId(id);
         if (postagem == null) return NotFound();
 
-        var resposta = new
-        {
-            postagem.Id,
-            Autor = new
-            {
-                postagem.Autor.Id,
-                postagem.Autor.Nome
-            },
-            postagem.Conteudo,
-            postagem.Curtidas,
-            postagem.Comentarios,
-            postagem.DataHora
-        };
-
-        return Ok(resposta);
+        return Ok(postagem);
     }
 
     [HttpGet]
@@ -71,21 +47,7 @@ public class PostagemController : ControllerBase
             var postagens = _postagemRepository.Listar();
             if (postagens == null || !postagens.Any()) return NotFound();
 
-            var resposta = postagens.Select(postagem => new
-            {
-                postagem.Id,
-                Autor = new
-                {
-                    postagem.Autor.Id,
-                    postagem.Autor.Nome
-                },
-                postagem.Conteudo,
-                postagem.Curtidas,
-                postagem.Comentarios,
-                postagem.DataHora
-            });
-
-            return Ok(resposta);
+            return Ok(postagens);
         }
         catch (Exception ex)
         {
@@ -99,7 +61,7 @@ public class PostagemController : ControllerBase
         var postagem = _postagemRepository.ObterPostagemPorId(id);
         if (postagem == null) return NotFound();
         
-        postagem.Autor = postagemAtualizada.Autor;
+        postagem.AutorId = postagemAtualizada.AutorId;
         postagem.Conteudo = postagemAtualizada.Conteudo;
         postagem.Curtidas = postagemAtualizada.Curtidas;
         postagem.Comentarios = postagemAtualizada.Comentarios;

@@ -9,7 +9,7 @@ public class AppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=CampusConnectDB;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(@"Server=localhost,1433;Database=CampusConnectDB;Trusted_Connection=True;TrustServerCertificate=True;");
         }
     }
     

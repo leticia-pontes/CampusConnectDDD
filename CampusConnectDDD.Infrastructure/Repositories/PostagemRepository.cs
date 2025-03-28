@@ -22,20 +22,54 @@ public class PostagemRepository : IPostagemRepository
             _context.SaveChanges();
             return postagem;
         }
-        catch (Exception ex)
+        catch (DbUpdateException ex)
         {
-            throw new Exception("Erro ao adicionar postagem: ", ex);
+            if (ex.InnerException != null)
+            {
+                throw new Exception("Erro ao salvar no banco: " + ex.InnerException.Message);
+            }
+            throw;
         }
     }
 
     public Postagem? ObterPostagemPorId(int id)
     {
-        return _context.Postagens.FirstOrDefault(p => p.Id == id);
+        return _context.Postagens
+            .Include(p => p.Autor)
+            .Select(p => new Postagem
+            {
+                Id = p.Id,
+                Autor = new Usuario
+                {
+                    Id = p.Autor.Id,
+                    Nome = p.Autor.Nome
+                },
+                Conteudo = p.Conteudo,
+                Curtidas = p.Curtidas,
+                Comentarios = p.Comentarios,
+                DataHora = p.DataHora
+            })
+            .FirstOrDefault(p => p.Id == id);
     }
 
     public List<Postagem> Listar()
     {
-        return _context.Postagens.ToList();
+        return _context.Postagens
+            .Include(p => p.Autor)
+            .Select(p => new Postagem
+            {
+                Id = p.Id,
+                Autor = new Usuario
+                {
+                    Id = p.Autor.Id,
+                    Nome = p.Autor.Nome
+                },
+                Conteudo = p.Conteudo,
+                Curtidas = p.Curtidas,
+                Comentarios = p.Comentarios,
+                DataHora = p.DataHora
+            })
+            .ToList();
     }
 
     public bool Atualizar(int id, Postagem postagem)

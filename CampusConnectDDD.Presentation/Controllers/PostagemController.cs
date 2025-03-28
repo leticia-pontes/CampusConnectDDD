@@ -20,9 +20,19 @@ public class PostagemController : ControllerBase
     {
         try
         {
-            var postagemCriado = _postagemRepository.Adicionar(postagem);
-            return CreatedAtAction(nameof(GetById), new { id = postagemCriado.Id },
-                postagemCriado);
+            if (postagem.Autor != null)
+            {
+                // Adicionando valores padrão para os campos obrigatórios do Autor
+                if (postagem.Autor.Curso == null) postagem.Autor.Curso = "";
+                if (postagem.Autor.Email == null) postagem.Autor.Email = "";
+                if (postagem.Autor.Senha == null) postagem.Autor.Senha = "";
+                if (postagem.Autor.Seguindo == null) postagem.Autor.Seguindo = new List<int>();
+                if (postagem.Autor.Seguidores == null) postagem.Autor.Seguidores = new List<int>();
+            }
+
+            var postagemCriada = _postagemRepository.Adicionar(postagem);
+            return CreatedAtAction(nameof(GetById), new { id = postagemCriada.Id },
+                postagemCriada);
         }
         catch (Exception ex)
         {
@@ -36,7 +46,21 @@ public class PostagemController : ControllerBase
         var postagem = _postagemRepository.ObterPostagemPorId(id);
         if (postagem == null) return NotFound();
 
-        return Ok(postagem);
+        var resposta = new
+        {
+            postagem.Id,
+            Autor = new
+            {
+                postagem.Autor.Id,
+                postagem.Autor.Nome
+            },
+            postagem.Conteudo,
+            postagem.Curtidas,
+            postagem.Comentarios,
+            postagem.DataHora
+        };
+
+        return Ok(resposta);
     }
 
     [HttpGet]
@@ -44,10 +68,24 @@ public class PostagemController : ControllerBase
     {
         try
         {
-            var postagems = _postagemRepository.Listar();
-            if (postagems == null || !postagems.Any()) return NotFound();
+            var postagens = _postagemRepository.Listar();
+            if (postagens == null || !postagens.Any()) return NotFound();
 
-            return Ok(postagems);
+            var resposta = postagens.Select(postagem => new
+            {
+                postagem.Id,
+                Autor = new
+                {
+                    postagem.Autor.Id,
+                    postagem.Autor.Nome
+                },
+                postagem.Conteudo,
+                postagem.Curtidas,
+                postagem.Comentarios,
+                postagem.DataHora
+            });
+
+            return Ok(resposta);
         }
         catch (Exception ex)
         {
@@ -56,18 +94,18 @@ public class PostagemController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put(int id, Postagem postagemAtualizado)
+    public IActionResult Put(int id, Postagem postagemAtualizada)
     {
         var postagem = _postagemRepository.ObterPostagemPorId(id);
         if (postagem == null) return NotFound();
         
-        postagem.Autor = postagemAtualizado.Autor;
-        postagem.Conteudo = postagemAtualizado.Conteudo;
-        postagem.Curtidas = postagemAtualizado.Curtidas;
-        postagem.Comentarios = postagemAtualizado.Comentarios;
-        postagem.DataHora = postagemAtualizado.DataHora;
+        postagem.Autor = postagemAtualizada.Autor;
+        postagem.Conteudo = postagemAtualizada.Conteudo;
+        postagem.Curtidas = postagemAtualizada.Curtidas;
+        postagem.Comentarios = postagemAtualizada.Comentarios;
+        postagem.DataHora = postagemAtualizada.DataHora;
         
-        _postagemRepository.Atualizar(id, postagemAtualizado);
+        _postagemRepository.Atualizar(id, postagem);
         return NoContent();
     }
 

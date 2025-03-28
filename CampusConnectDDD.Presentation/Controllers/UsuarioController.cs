@@ -68,7 +68,7 @@ public class UsuarioController : ControllerBase
         usuario.Seguidores = usuarioAtualizado.Seguidores;
         usuario.Seguindo = usuarioAtualizado.Seguindo;
         
-        _usuarioRepository.Atualizar(id, usuarioAtualizado);
+        _usuarioRepository.Atualizar(id, usuario);
         return NoContent();
     }
 

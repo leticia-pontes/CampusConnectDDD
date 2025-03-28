@@ -31,43 +31,12 @@ public class UsuarioRepository : IUsuarioRepository
     public Usuario? ObterUsuarioPorId(int id)
     {
         return _context.Usuarios
-            .Where(u => u.Id == id)
-            .Select(u => new Usuario
-            {
-                Id = u.Id,
-                Nome = u.Nome,
-                Seguidores = u.Seguidores.Select(s => new Usuario
-                {
-                    Id = s.Id,
-                    Nome = s.Nome
-                }).ToList(),
-                Seguindo = u.Seguindo.Select(s => new Usuario
-                {
-                    Id = s.Id,
-                    Nome = s.Nome
-                }).ToList()
-            })
             .FirstOrDefault(u => u.Id == id);
     }
 
     public List<Usuario> Listar()
     {
         return _context.Usuarios
-            .Select(u => new Usuario
-            {
-                Id = u.Id,
-                Nome = u.Nome,
-                Seguidores = u.Seguidores.Select(s => new Usuario
-                {
-                    Id = s.Id,
-                    Nome = s.Nome
-                }).ToList(),
-                Seguindo = u.Seguindo.Select(s => new Usuario
-                {
-                    Id = s.Id,
-                    Nome = s.Nome
-                }).ToList()
-            })
             .ToList();
     }
 

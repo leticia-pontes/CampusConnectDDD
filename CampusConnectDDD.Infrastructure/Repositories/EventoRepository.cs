@@ -1,6 +1,7 @@
 using CampusConnectDDD.Domain.Entities;
 using CampusConnectDDD.Infrastructure.Data;
 using CampusConnectDDD.Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CampusConnectDDD.Infrastructure.Repositories;
 
@@ -21,9 +22,13 @@ public class EventoRepository : IEventoRepository
             _context.SaveChanges();
             return evento;
         }
-        catch (Exception ex)
+        catch (DbUpdateException ex)
         {
-            throw new Exception("Erro ao adicionar evento: ", ex);
+            if (ex.InnerException != null)
+            {
+                throw new Exception("Erro ao salvar no banco: " + ex.InnerException.Message);
+            }
+            throw;
         }
     }
 

@@ -1,6 +1,7 @@
 using CampusConnectDDD.Domain.Entities;
 using CampusConnectDDD.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace CampusConnectDDD.Presentation.Controllers;
 
@@ -53,6 +54,62 @@ public class UsuarioController : ControllerBase
         {
             return StatusCode(500, $"Erro ao listar usuários: {ex.Message}");
         }
+    }
+
+    [HttpPost("{id}/seguir/{idSeguindo}")]
+    public IActionResult Follow(int id, int idSeguindo)
+    {
+        var usuario = _usuarioRepository.ObterUsuarioPorId(id);
+        Console.WriteLine($"ID: {usuario.Id}, Seguindo: {usuario.Seguindo?.Count}");
+        var seguindo = _usuarioRepository.ObterUsuarioPorId(idSeguindo);
+        Console.WriteLine($"ID: {seguindo.Id}, Seguindo: {seguindo.Seguindo?.Count}");
+        
+        if (usuario == null || seguindo == null) return NotFound("Usuário não encontrado.");
+        if (usuario.Seguindo.Contains(idSeguindo)) return BadRequest("Você já segue este usuário.");
+        
+        usuario.AdicionarSeguindo(idSeguindo);
+        seguindo.AdicionarSeguidor(id);
+
+        _usuarioRepository.Atualizar(id, usuario);
+        _usuarioRepository.Atualizar(idSeguindo, seguindo);
+        
+        return Ok("Agora você está seguindo este usuário.");
+    }
+    
+    [HttpPost("{id}/deixarDeSeguir/{idSeguindo}")]
+    public IActionResult Unfollow(int id, int idSeguindo)
+    {
+        var usuario = _usuarioRepository.ObterUsuarioPorId(id);
+        var seguindo = _usuarioRepository.ObterUsuarioPorId(idSeguindo);
+        
+        if (usuario == null || seguindo == null) return NotFound("Usuário não encontrado.");
+        if (!usuario.Seguindo.Contains(idSeguindo)) return BadRequest("Você não segue este usuário.");
+        
+        usuario.RemoverSeguindo(idSeguindo);
+        seguindo.RemoverSeguidor(id);
+
+        _usuarioRepository.Atualizar(id, usuario);
+        _usuarioRepository.Atualizar(idSeguindo, seguindo);
+        
+        return Ok("Você deixou de seguir este usuário.");
+    }
+    
+    [HttpPost("{id}/removerSeguidor/{idSeguidor}")]
+    public IActionResult RemoveFollowe(int id, int idSeguidor)
+    {
+        var usuario = _usuarioRepository.ObterUsuarioPorId(id);
+        var seguidor = _usuarioRepository.ObterUsuarioPorId(idSeguidor);
+        
+        if (usuario == null || seguidor == null) return NotFound("Usuário não encontrado.");
+        if (!usuario.Seguidores.Contains(idSeguidor)) return BadRequest("Este usuário não te segue.");
+        
+        usuario.RemoverSeguidor(idSeguidor);
+        seguidor.RemoverSeguindo(id);
+
+        _usuarioRepository.Atualizar(id, usuario);
+        _usuarioRepository.Atualizar(idSeguidor, seguidor);
+        
+        return Ok("Você removeu este usuário dos seus seguidores.");
     }
 
     [HttpPut("{id}")]

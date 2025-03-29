@@ -55,6 +55,34 @@ public class PostagemController : ControllerBase
         }
     }
 
+    [HttpPost("{id}/curtirPostagem")]
+    public IActionResult Like(int id)
+    {
+        if (id <= 0) return BadRequest("ID da postagem inválido!");
+        
+        var postagem = _postagemRepository.ObterPostagemPorId(id);
+        if (postagem == null) return NotFound("Postagem não encontrada.");
+        
+        postagem.CurtirPostagem();
+        
+        _postagemRepository.Atualizar(id, postagem);
+        return Ok();
+    }
+    
+    [HttpPost("{id}/removerCurtida")]
+    public IActionResult RemoveLike(int id)
+    {
+        if (id <= 0) return BadRequest("ID da postagem inválido!");
+        
+        var postagem = _postagemRepository.ObterPostagemPorId(id);
+        if (postagem == null) return NotFound("Postagem não encontrada.");
+        
+        postagem.RemoverCurtida();
+        
+        _postagemRepository.Atualizar(id, postagem);
+        return Ok();
+    }
+
     [HttpPut("{id}")]
     public IActionResult Put(int id, Postagem postagemAtualizada)
     {

@@ -66,6 +66,7 @@ public class EventoController : ControllerBase
         evento.Descricao = eventoAtualizado.Descricao;
         evento.EventoAberto = eventoAtualizado.EventoAberto;
         evento.DataHora = eventoAtualizado.DataHora;
+        evento.Participantes = eventoAtualizado.Participantes;
         
         _eventoRepository.Atualizar(id, evento);
         return NoContent();

@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampusConnectDDD.Infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampusConnectDDD.Presentation", "CampusConnectDDD.Presentation\CampusConnectDDD.Presentation.csproj", "{DC82F59C-20FD-43B8-AD81-780085A164A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampusConnectDDD.Application", "CampusConnectDDD.Application\CampusConnectDDD.Application.csproj", "{D21D0F96-F0AA-4CFF-A13D-D93419494FB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,7 @@ Global
 		{02038D03-E6FE-4FF7-8BF9-1AEA93E08C5B} = {0D489C23-5BD4-4C22-962D-940E22988573}
 		{AB3EBE0E-136D-4B27-9C95-B43A71C00376} = {2E0924DB-87B5-4A2F-864E-5771B99CC54B}
 		{DC82F59C-20FD-43B8-AD81-780085A164A1} = {ACE21002-41E3-42F2-83F7-F0110BBC146C}
+		{D21D0F96-F0AA-4CFF-A13D-D93419494FB4} = {97820545-1C82-4CF3-A28A-4954689929BF}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{02038D03-E6FE-4FF7-8BF9-1AEA93E08C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -37,5 +40,9 @@ Global
 		{DC82F59C-20FD-43B8-AD81-780085A164A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC82F59C-20FD-43B8-AD81-780085A164A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC82F59C-20FD-43B8-AD81-780085A164A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D21D0F96-F0AA-4CFF-A13D-D93419494FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D21D0F96-F0AA-4CFF-A13D-D93419494FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D21D0F96-F0AA-4CFF-A13D-D93419494FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D21D0F96-F0AA-4CFF-A13D-D93419494FB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

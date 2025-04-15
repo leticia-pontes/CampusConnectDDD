@@ -7,14 +7,8 @@ public class Usuario
     public string Email { get; set; }
     public string Senha { get; set; }
     public string? Curso { get; set; }
-    public List<int> Seguidores { get; set; }
-    public List<int> Seguindo { get; set; }
-    
-    public Usuario()
-    {
-        Seguidores = new List<int>();
-        Seguindo = new List<int>();
-    }
+    public List<int> Seguidores { get; set; } = new();
+    public List<int> Seguindo { get; set; } = new();
 
     public void AdicionarSeguindo(int id)
     {

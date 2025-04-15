@@ -8,4 +8,5 @@ public class Evento
     public string Descricao { get; set; }
     public bool EventoAberto { get; set; }
     public DateTime DataHora { get; set; }
+    public List<Usuario> Participantes { get; set; } = new();
 }
